@@ -47,6 +47,25 @@ def autoNorm(dataSet):
     ranges = maxVals - minVals
     normDataSet = zeros(shape(dataSet))
     m = dataSet.shape[0]
-    normDataSet = dataSet - tile(minVals, (m - 1))
+    normDataSet = dataSet - tile(minVals, (m, 1))
     normDataSet = normDataSet / tile(ranges, (m , 1))
     return normDataSet, ranges, minVals
+
+def datingClassTest():
+    testRate = 0.1
+    datingDataMat, datingLabels = file2matrix('datingTestSet.txt')
+    normMat, ranges, minVals = autoNorm(datingDataMat)
+    m = normMat.shape[0]
+    numTestVecs = int(m * testRate)
+    errorCount = 0
+
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:], normMat[numTestVecs:m],
+                                     datingLabels[numTestVecs:m], 3)
+        print("the classifier came back with: %d, the real a %d."
+              % (classifierResult, datingLabels[i]))
+
+        if(classifierResult != datingLabels[i]):
+            errorCount += 1
+
+    print("the error rate is: %f %%" % (errorCount / float(m) * 100))
