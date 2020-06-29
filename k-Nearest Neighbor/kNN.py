@@ -1,4 +1,5 @@
 from numpy import *
+from os import listdir
 import operator
 
 def createDataSet():
@@ -69,3 +70,41 @@ def datingClassTest():
             errorCount += 1
 
     print("the error rate is: %f %%" % (errorCount / float(m) * 100))
+
+def img2vector(filename):
+    returnVect = zeros((1, 1024))
+    file = open(filename)
+    for i in range(32):
+        lineStr = file.readline()
+        for j in range(32):
+            returnVect[0, 32 * i + j] = int(lineStr[j])
+    return returnVect
+
+def handwritingClassTest():
+    filepath = 'E:/Code/Python/machinelearninginaction/Ch02/digits/'
+    hwLabels = []
+    trainingFileList = listdir(filepath + 'trainingDigits')
+    m = len(trainingFileList)
+    trainingMat = zeros((m, 1024))
+    for i in range(m):
+        fileNameStr = trainingFileList[i]
+        fileStr = fileNameStr.split('.')[0]
+        classNumStr = int(fileStr.split('_')[0])
+        hwLabels.append(classNumStr)
+        trainingMat[i,:] = img2vector(filepath + 'trainingDigits/' + fileNameStr)
+
+    testFileList = listdir(filepath + 'testDigits')
+    errorCount = 0
+    mTest = len(testFileList)
+    for i in range(mTest):
+        fileNameStr = testFileList[i]
+        fileStr = fileNameStr.split('.')[0]
+        classNumStr = int(fileStr.split('_')[0])
+        vectorUnderTest = img2vector(filepath + 'testDigits/' + fileNameStr)
+        classifierResult = classify0(vectorUnderTest, trainingMat, hwLabels, 5)
+        print('the classifier came back with: %d, the real is %d.' % (classifierResult, classNumStr))
+        if classifierResult != classNumStr:
+            errorCount += 1
+    print('\nthe total number of error is: %d.' % errorCount)
+    print('\nthe error rate is: %f.' % (errorCount / float(mTest)))
+
