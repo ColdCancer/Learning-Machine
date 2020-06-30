@@ -1,0 +1,12 @@
+// Decision Tree
+digraph MyTree {
+	"no surfacing" [color=blue]
+	no1 [label=no color=red]
+	"no surfacing" -> no1
+	flippers [color=blue]
+	no2 [label=no color=red]
+	flippers -> no2
+	yes3 [label=yes color=red]
+	flippers -> yes3
+	"no surfacing" -> flippers
+}

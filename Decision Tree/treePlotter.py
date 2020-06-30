@@ -5,5 +5,22 @@
 
 from graphviz import Digraph
 
-def plotTree(myTree):
-    pass
+def searchTree(tree, dot, leafCount):
+    rootName = list(tree.keys())[0]
+    root = tree[rootName]
+    dot.node(rootName, color='blue')
+    for index in root.keys():
+        if type(root[index]).__name__ != 'dict':
+            leafCount += 1
+            childName = root[index] + str(leafCount)
+            dot.node(childName, root[index], color='red')
+            dot.edge(rootName, childName)
+        else:
+            childName = searchTree(root[index], dot, leafCount)
+            dot.edge(rootName, childName)
+    return rootName
+
+def plotTree(Mytree):
+    dot = Digraph('MyTree', 'Decision Tree')
+    searchTree(Mytree, dot, 0)
+    dot.view()
