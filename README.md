@@ -3,3 +3,5 @@
 ## Classification Algorithm
 
 - k-Nearest Neighbor
+
+- Decision Tree
