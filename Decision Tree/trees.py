@@ -81,3 +81,29 @@ def createTree(dataSet, labels):
         subLabels = labels[:]
         myTree[bestFeatLabel][value] = createTree(subDataSet, subLabels)
     return myTree
+
+
+def classify(inputTree, featLabels, testVec):
+    global classLabel
+    firstStr = list(inputTree.keys())[0]
+    secondDict = inputTree[firstStr]
+    featIndex = featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex] == key:
+            if type(secondDict[key]).__name__ == 'dict':
+                classLabel = classify(secondDict[key], featLabels, testVec)
+            else :
+                classLabel = secondDict[key]
+    return classLabel
+
+def storeTree(inputTree, filename):
+    import pickle
+    file = open(filename, 'wb')
+    pickle.dump(inputTree, file)
+    file.close()
+
+def grabTree(filename):
+    import pickle
+    file = open(filename, 'rb')
+    return pickle.load(file)
+
