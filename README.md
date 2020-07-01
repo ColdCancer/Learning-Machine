@@ -5,3 +5,5 @@
 - k-Nearest Neighbor
 
 - Decision Tree
+
+- Naive Bayes
