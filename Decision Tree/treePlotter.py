@@ -5,28 +5,31 @@
 
 from graphviz import Digraph
 
-def searchTree(tree, dot, leafCount):
+nodeCount = {}
+
+def searchTree(tree, dot):
     '''
     :param tree: operate on this tree
     :param dot: dot object, used to draw a directed graph
-    :param leafCount: how many leaf nodes have been visited
     :return: The root name of the tree to be operated on
     '''
     rootName = list(tree.keys())[0]
-    root = tree[rootName]
-    dot.node(rootName, color='blue')
-    for index in root.keys():
-        if type(root[index]).__name__ != 'dict': # this is the leaf node
-            leafCount += 1
-            childName = root[index] + str(leafCount)
-            dot.node(childName, root[index], color='red')
-            dot.edge(rootName, childName)
+    nodeCount[rootName] = nodeCount.get(rootName, 0) + 1
+    rootTag = rootName + str(nodeCount[rootName])
+    dot.node(rootTag, rootName, color='blue')
+    childen = tree[rootName]
+    for index in childen.keys():
+        if type(childen[index]).__name__ != 'dict': # this is the leaf node
+            nodeCount[childen[index]] = nodeCount.get(childen[index], 0) + 1
+            childTag = childen[index] + str(nodeCount[childen[index]])
+            dot.node(childTag, childen[index], color='red')
+            dot.edge(rootTag, childTag)
         else:
-            childName = searchTree(root[index], dot, leafCount)
-            dot.edge(rootName, childName)
-    return rootName
+            childTag = searchTree(childen[index], dot)
+            dot.edge(rootTag, childTag)
+    return rootTag
 
 def plotTree(Mytree):
     dot = Digraph('MyTree', 'Decision Tree')
-    searchTree(Mytree, dot, 0)
+    searchTree(Mytree, dot)
     dot.view()

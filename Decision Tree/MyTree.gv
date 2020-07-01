@@ -1,12 +1,32 @@
 // Decision Tree
 digraph MyTree {
-	"no surfacing" [color=blue]
-	no1 [label=no color=red]
-	"no surfacing" -> no1
-	flippers [color=blue]
-	no2 [label=no color=red]
-	flippers -> no2
-	yes3 [label=yes color=red]
-	flippers -> yes3
-	"no surfacing" -> flippers
+	tearRate1 [label=tearRate color=blue]
+	"no lenses1" [label="no lenses" color=red]
+	tearRate1 -> "no lenses1"
+	astigmtic1 [label=astigmtic color=blue]
+	age1 [label=age color=blue]
+	soft1 [label=soft color=red]
+	age1 -> soft1
+	prescript1 [label=prescript color=blue]
+	"no lenses2" [label="no lenses" color=red]
+	prescript1 -> "no lenses2"
+	soft2 [label=soft color=red]
+	prescript1 -> soft2
+	age1 -> prescript1
+	soft3 [label=soft color=red]
+	age1 -> soft3
+	astigmtic1 -> age1
+	prescript2 [label=prescript color=blue]
+	hard1 [label=hard color=red]
+	prescript2 -> hard1
+	age2 [label=age color=blue]
+	hard2 [label=hard color=red]
+	age2 -> hard2
+	"no lenses3" [label="no lenses" color=red]
+	age2 -> "no lenses3"
+	"no lenses4" [label="no lenses" color=red]
+	age2 -> "no lenses4"
+	prescript2 -> age2
+	astigmtic1 -> prescript2
+	tearRate1 -> astigmtic1
 }
