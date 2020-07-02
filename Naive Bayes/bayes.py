@@ -24,8 +24,9 @@ def createVocabList(dataSet):
 def setOfWordVec(vocabList, inputSet):
     returnVec = [0] * len(vocabList)
     for word in inputSet:
-        if word in inputSet:
-            returnVec[vocabList.index(word)] = 1
+        if word in vocabList:
+            # returnVec[vocabList.index(word)] = 1
+            returnVec[vocabList.index(word)] += 1
         else:
             print('the word: %s is not in my vocabulary!')
     return returnVec
@@ -46,7 +47,7 @@ def trainNB0(trainMatrix, trainCategory):
             p1Denom += sum(trainMatrix[i])
         else:
             p0Num += trainMatrix[i]
-            p1Denom += sum(trainMatrix[i])
+            p0Denom += sum(trainMatrix[i])
     # p0Vect = p0Num / p0Denom
     # p1Vect = p1Num / p1Denom
     p0Vect = log(p0Num / p0Denom)
