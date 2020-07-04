@@ -80,3 +80,32 @@ def stocGradAscent1(dataMatrix, classLabels, numIter=150):
             weights -= alpha * error * dataMatrix[randIndex]
             del(dataIndex[randIndex])
     return weights
+
+def classifyVector(inX, weights):
+    prob = sigmoid(sum(inX * weights))
+    return 1.0 if prob > 0.5 else 0.0
+
+def colicTest():
+    fileTrain = open('horseColicTraining.txt')
+    fileTest = open('horseColicTest.txt')
+    trainingSet = []; trainingLabels = []
+    for line in fileTrain.readlines():
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21):
+            lineArr.append(float(currLine[i]))
+        trainingSet.append(lineArr)
+        trainingLabels.append(float(currLine[21]))
+    trainWeights = stocGradAscent1(array(trainingSet), trainingLabels)
+    errorCount = 0; numTestVec = 0.0
+    for line in fileTest.readlines():
+        numTestVec += 1.0
+        currLine = line.strip().split('\t')
+        lineArr = []
+        for i in range(21):
+            lineArr.append(float(currLine[i]))
+        if int(classifyVector(array(lineArr), trainWeights)) != int(currLine[21]):
+            errorCount += 1
+    print('the erroe rate of this test is : %f %% .' % (float(errorCount) / numTestVec % 100))
+
+
