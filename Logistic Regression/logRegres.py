@@ -69,13 +69,13 @@ def stocGradAscent(dataMatrix, classLabels):
 
 def stocGradAscent1(dataMatrix, classLabels, numIter=150):
     m, n = shape(dataMatrix)
-    weights = ones(n)
+    weights = random.uniform(1, 50, (n,))
     for j in range(numIter):
         dataIndex = list(range(m))
         for i in range(m):
             alpha = 4 / (1.0 + j + i) + 0.0001
             randIndex = int(random.uniform(0, len(dataIndex)))
-            h = sigmoid(sum(dataMatrix[randIndex]*weights))
+            h = sigmoid(sum(dataMatrix[randIndex] * weights))
             error = h - classLabels[randIndex]
             weights -= alpha * error * dataMatrix[randIndex]
             del(dataIndex[randIndex])
@@ -106,6 +106,13 @@ def colicTest():
             lineArr.append(float(currLine[i]))
         if int(classifyVector(array(lineArr), trainWeights)) != int(currLine[21]):
             errorCount += 1
-    print('the erroe rate of this test is : %f %% .' % (float(errorCount) / numTestVec % 100))
+    errorRate = float(errorCount) / numTestVec * 100
+    print('the erroe rate of this test is : %f %% .' % (errorRate))
+    return errorRate
 
 
+def multTest():
+    numTests = 10; errorSum = 0.0
+    for k in range(numTests):
+        errorSum += colicTest()
+    print('after %d iterations the average error rate is : %f %%' % (numTests, errorSum / numTests))
